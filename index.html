@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MIXCIN® 2027 團員班線上徵選 & 2026 補考官方報名網站</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #0b0d13;
+      --card-bg: #141824;
+      --card-border: #252b3d;
+      --primary: #6366f1;
+      --primary-hover: #4f46e5;
+      --accent: #f59e0b;
+      --success: #10b981;
+      --text-main: #f3f4f6;
+      --text-muted: #9ca3af;
+      --input-bg: #1c2232;
+    }
+
+    * { box-sizing: border-box; font-family: 'Noto Sans TC', sans-serif; }
+    body { background-color: var(--bg-dark); color: var(--text-main); margin: 0; padding: 20px 14px; line-height: 1.6; }
+    .container { max-width: 780px; margin: 0 auto; }
+
+    /* Hero 視覺區 */
+    .hero {
+      background: linear-gradient(135deg, #1e1b4b 0%, #0f172a 60%, #1e1b4b 100%);
+      border: 1px solid #312e81;
+      border-radius: 20px;
+      padding: 36px 24px;
+      text-align: center;
+      margin-bottom: 24px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+    .hero-tag {
+      display: inline-block;
+      background: rgba(245, 158, 11, 0.15);
+      color: var(--accent);
+      border: 1px solid rgba(245, 158, 11, 0.4);
+      padding: 4px 14px;
+      border-radius: 99px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      margin-bottom: 12px;
+    }
+    .hero h1 { font-size: 26px; font-weight: 900; margin: 0; letter-spacing: 0.5px; color: #ffffff; }
+
+    /* 簡章資訊卡 */
+    .notice-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 22px;
+      margin-bottom: 24px;
+    }
+    .notice-title { font-size: 16px; font-weight: 700; color: var(--accent); margin: 0 0 12px 0; display: flex; align-items: center; gap: 8px; }
+    .notice-list { margin: 0; padding-left: 20px; color: #d1d5db; font-size: 14px; }
+    .notice-list li { margin-bottom: 8px; }
+
+    /* 表單區塊卡片 */
+    .form-section {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 22px;
+      position: relative;
+      overflow: hidden;
+    }
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 18px;
+      font-weight: 700;
+      color: #ffffff;
+      border-bottom: 1px solid var(--card-border);
+      padding-bottom: 12px;
+      margin-bottom: 18px;
+    }
+    .step-pill {
+      background: var(--primary);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 900;
+      padding: 3px 10px;
+      border-radius: 6px;
+    }
+
+    /* 模式切換按鈕（徵選 vs 補考） */
+    .mode-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 18px; }
+    .mode-option {
+      background: var(--input-bg);
+      border: 2px solid var(--card-border);
+      border-radius: 12px;
+      padding: 14px;
+      cursor: pointer;
+      text-align: center;
+      transition: 0.2s;
+    }
+    .mode-option.active {
+      border-color: var(--primary);
+      background: rgba(99, 102, 241, 0.15);
+    }
+    .mode-option strong { display: block; font-size: 16px; color: #fff; }
+    .mode-option span { font-size: 12px; color: var(--text-muted); }
+
+    /* 組別多選卡片 */
+    .group-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    @media (max-width: 640px) { .group-grid { grid-template-columns: 1fr; } .mode-grid { grid-template-columns: 1fr; } }
+    
+    .group-card {
+      background: var(--input-bg);
+      border: 2px solid var(--card-border);
+      border-radius: 12px;
+      padding: 14px;
+      cursor: pointer;
+      transition: 0.2s;
+      position: relative;
+    }
+    .group-card.selected {
+      border-color: var(--accent);
+      background: rgba(245, 158, 11, 0.12);
+    }
+    .group-name { font-weight: 700; font-size: 15px; color: #fff; display: block; }
+    .group-age { font-size: 12px; color: var(--accent); display: block; margin-top: 2px; }
+
+    /* 教學影片與音樂教材區（強制垂直排列並切開間距） */
+    #materialContainer {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+    .material-item {
+      display: block;
+      width: 100%;
+      background: #0f131d;
+      border: 1px solid #313a54;
+      border-radius: 14px;
+      padding: 18px;
+      position: relative;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    }
+    .material-item h4 {
+      margin: 0 0 14px 0;
+      color: #a5b4fc;
+      font-size: 16px;
+      padding-bottom: 8px;
+      border-bottom: 1px dashed #283046;
+    }
+    .video-box {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border-radius: 10px;
+      overflow: hidden;
+      background: #000;
+      margin-bottom: 14px;
+      position: relative;
+    }
+    .video-box iframe {
+      display: block;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+    .btn-music {
+      display: block;
+      width: 100%;
+      background: #059669;
+      color: #fff;
+      text-align: center;
+      padding: 13px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 15px;
+      transition: 0.2s;
+    }
+    .btn-music:hover { background: #047857; }
+
+    /* 表單欄位 */
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+    @media (max-width: 640px) { .grid-2, .grid-3 { grid-template-columns: 1fr; } }
+
+    .form-group { margin-bottom: 16px; }
+    label { display: block; font-size: 14px; font-weight: 700; margin-bottom: 6px; color: #e5e7eb; }
+    .req { color: #f87171; margin-left: 3px; }
+    .helper { font-size: 12px; color: var(--text-muted); margin-bottom: 6px; display: block; }
+
+    input[type="text"], input[type="date"], input[type="tel"], input[type="email"], select, textarea {
+      width: 100%;
+      padding: 12px;
+      background: var(--input-bg);
+      border: 1px solid #374151;
+      border-radius: 8px;
+      color: #ffffff;
+      font-size: 15px;
+      transition: 0.2s;
+    }
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+    }
+    input[readonly] { background: #131722; color: #9ca3af; cursor: not-allowed; }
+    textarea { min-height: 80px; resize: vertical; }
+
+    /* 匯款與費用看板 */
+    .fee-summary {
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.12), rgba(99, 102, 241, 0.12));
+      border: 1px solid rgba(245, 158, 11, 0.35);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .fee-amount { font-size: 24px; font-weight: 900; color: var(--accent); }
+    .bank-info {
+      background: #1a2030;
+      border-radius: 10px;
+      padding: 14px;
+      font-size: 14px;
+      color: #e5e7eb;
+      margin-bottom: 16px;
+      border-left: 4px solid var(--accent);
+    }
+
+    /* 條款勾選 */
+    .agree-box {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      background: #1a2030;
+      padding: 14px;
+      border-radius: 10px;
+      margin-bottom: 18px;
+      cursor: pointer;
+    }
+    .agree-box input { width: 18px; height: 18px; margin-top: 3px; accent-color: var(--primary); }
+    .agree-box span { font-size: 13px; color: #d1d5db; }
+
+    /* 送出按鈕 */
+    .btn-submit {
+      width: 100%;
+      padding: 16px;
+      background: linear-gradient(135deg, #4f46e5 0%, #2563eb 100%);
+      color: #ffffff;
+      border: none;
+      border-radius: 12px;
+      font-size: 17px;
+      font-weight: 900;
+      cursor: pointer;
+      box-shadow: 0 6px 20px rgba(79, 70, 229, 0.4);
+      transition: 0.2s;
+    }
+    .btn-submit:hover { transform: translateY(-1px); box-shadow: 0 8px 25px rgba(79, 70, 229, 0.55); }
+    .btn-submit:disabled { background: #4b5563; cursor: not-allowed; box-shadow: none; transform: none; }
+
+    /* 完成後導向面板 */
+    .success-modal {
+      background: #064e3b;
+      border: 2px solid #10b981;
+      border-radius: 16px;
+      padding: 24px;
+      text-align: center;
+      margin-top: 20px;
+    }
+    .success-modal h3 { margin: 0 0 10px 0; color: #a7f3d0; font-size: 20px; }
+    .tag-copy {
+      background: #022c22;
+      color: #34d399;
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-weight: 700;
+      display: inline-block;
+      margin: 8px 0 14px 0;
+      border: 1px dashed #10b981;
+    }
+    .action-links { display: flex; flex-direction: column; gap: 10px; max-width: 420px; margin: 0 auto; }
+    .btn-dropbox { background: #0061ff; color: #fff; padding: 14px; border-radius: 10px; text-decoration: none; font-weight: 700; }
+    .btn-line { background: #06c755; color: #fff; padding: 14px; border-radius: 10px; text-decoration: none; font-weight: 700; }
+
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- 頂部品牌視覺 -->
+    <div class="hero">
+      <div class="hero-tag">MIXCIN® DANCE ACADEMY OFFICIAL</div>
+      <h1>2027 團員班線上徵選 & 2026 團員班補考</h1>
+    </div>
+
+    <!-- 徵選簡章說明 -->
+    <div class="notice-card">
+      <h3 class="notice-title">📋 線上徵選與補考須知</h3>
+      <ul class="notice-list">
+        <li><strong>甄選費用計算：</strong>2027 線上徵選報名 <strong>1 組 NT$200</strong>，報名 <strong>2 組(含)以上優惠 NT$300</strong>（若之前填寫報名表並繳交過報名費則無需再繳）；<strong>2026 團員班補考者免收報名費</strong>。</li>
+        <li><strong>線上徵選流程：</strong>選擇報名項目與組別 → 觀看指定教學影片並下載音樂練習 → 填妥報名表與匯款末五碼 → 點擊送出並前往 <strong>Dropbox 上傳徵選影像</strong>。</li>
+        <li><strong>結果與洽詢：</strong>徵選結果將於 <strong>11/20 週五</strong>於 MIXCIN® 官方 IG 與社群公佈。如有疑問請洽官方 LINE：<code>@mixcin</code> 或 <code>sun10190</code>（柏豪老師）。</li>
+      </ul>
+    </div>
+
+    <!-- STEP 1: 選擇申請類型與組別 -->
+    <div class="form-section">
+      <div class="section-header"><span class="step-pill">STEP 1</span> 選擇申請項目與組別（可複選）</div>
+      
+      <label>申請項目<span class="req">*</span></label>
+      <div class="mode-grid">
+        <div id="modeAudition" class="mode-option active" onclick="setApplyType('2027 競演團線上徵選')">
+          <strong>2027 競演團線上徵選</strong>
+          <span>單組 NT$200 / 兩組以上 NT$300</span>
+        </div>
+        <div id="modeMakeup" class="mode-option" onclick="setApplyType('2026 團員班補考')">
+          <strong>2026 團員班補考</strong>
+          <span>現任團員補考專用（免報名費）</span>
+        </div>
+      </div>
+
+      <label>選擇組別（點擊卡片可複選）<span class="req">*</span></label>
+      <div class="group-grid">
+        <div class="group-card" onclick="toggleGroup(this, 'U12組 (8-12歲)', 'U12/U18組')">
+          <span class="group-name">U12 組</span>
+          <span class="group-age">8 – 12 歲</span>
+        </div>
+        <div class="group-card" onclick="toggleGroup(this, 'U18組 (12-18歲)', 'U12/U18組')">
+          <span class="group-name">U18 組</span>
+          <span class="group-age">12 – 18 歲</span>
+        </div>
+        <div class="group-card" onclick="toggleGroup(this, 'KPOP組 (8-15歲)', 'KPOP組')">
+          <span class="group-name">KPOP 組</span>
+          <span class="group-age">8 – 15 歲</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 2: 教學影片與音樂檔案 -->
+    <div id="materialSection" class="form-section hidden">
+      <div class="section-header"><span class="step-pill">STEP 2</span> 指定教學影片與徵選音樂下載</div>
+      <div id="materialContainer"></div>
+    </div>
+
+    <!-- STEP 3: 徵選者基本資料 -->
+    <div class="form-section">
+      <div class="section-header"><span class="step-pill">STEP 3</span> 徵選者基本資料</div>
+
+      <div class="grid-2">
+        <div class="form-group">
+          <label for="studentName">徵選者姓名<span class="req">*</span></label>
+          <input type="text" id="studentName" placeholder="請填寫真實姓名，例：王小明">
+        </div>
+        <div class="form-group">
+          <label for="gender">性別<span class="req">*</span></label>
+          <select id="gender">
+            <option value="">-- 請選擇性別 --</option>
+            <option value="女性">女性</option>
+            <option value="男性">男性</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="grid-3">
+        <div class="form-group">
+          <label for="birthday">出生年月日<span class="req">*</span></label>
+          <input type="date" id="birthday" onchange="calcAge()">
+        </div>
+        <div class="form-group">
+          <label for="age">年齡（自動計算）</label>
+          <input type="text" id="age" readonly placeholder="選擇生日自動帶入">
+        </div>
+        <div class="form-group">
+          <label for="grade">目前學齡(年級)<span class="req">*</span></label>
+          <input type="text" id="grade" placeholder="例：國中1年級(7年級)">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="school">就讀學校<span class="req">*</span></label>
+        <input type="text" id="school" placeholder="例：台北市立中正國民中學">
+      </div>
+
+      <div class="form-group">
+        <label for="danceExp">舞齡與舞蹈風格<span class="req">*</span></label>
+        <span class="helper">請填寫學習舞蹈時間與舞風，例：Hip Hop 2年、KPOP 1年（自學者可填自學）</span>
+        <input type="text" id="danceExp" placeholder="例：Hip Hop 2年、KPOP 1年">
+      </div>
+
+      <div class="form-group">
+        <label for="pastExp">過去培訓 / 賽事經歷</label>
+        <span class="helper">曾參與其他單位團員班培訓、街舞賽事或演出（無則填「無」）</span>
+        <textarea id="pastExp" placeholder="例：MIXCIN 團員班 1 年、曾參與 XXX 盃街舞大賽...（無則填無）"></textarea>
+      </div>
+    </div>
+
+    <!-- STEP 4: 家長（聯絡人）資訊 -->
+    <div class="form-section">
+      <div class="section-header"><span class="step-pill">STEP 4</span> 家長（主要聯絡人）資訊</div>
+
+      <div class="grid-2">
+        <div class="form-group">
+          <label for="parentName">家長(聯絡人)姓名<span class="req">*</span></label>
+          <input type="text" id="parentName" placeholder="請填寫主要聯絡人姓名">
+        </div>
+        <div class="form-group">
+          <label for="parentPhone">家長(聯絡人)電話<span class="req">*</span></label>
+          <input type="tel" id="parentPhone" placeholder="例：0912345678">
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="form-group">
+          <label for="parentEmail">家長(聯絡人) Email<span class="req">*</span></label>
+          <input type="email" id="parentEmail" placeholder="例：example@gmail.com">
+        </div>
+        <div class="form-group">
+          <label for="parentLine">家長(聯絡人) LINE ID<span class="req">*</span></label>
+          <input type="text" id="parentLine" placeholder="請填寫可搜尋到的 LINE ID">
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 5: 費用核對、匯款與送出上傳 -->
+    <div class="form-section">
+      <div class="section-header"><span class="step-pill">STEP 5</span> 費用核對、匯款資訊與影像上傳</div>
+
+      <div class="fee-summary">
+        <div>
+          <div style="font-size:13px; color:#d1d5db;">已選組別：<strong id="summaryGroups" style="color:#fff;">尚未選擇</strong></div>
+          <div style="font-size:12px; color:#9ca3af;">系統自動依組數計算徵選費用</div>
+        </div>
+        <div class="fee-amount" id="summaryFee">NT$0</div>
+      </div>
+
+      <div id="bankSection" class="bank-info">
+        <div style="font-weight:700; color:#fbbf24; margin-bottom:4px;">🏦 轉帳匯款資訊（國泰世華銀行）</div>
+        <div>銀行代碼：<strong>013</strong> ｜ 轉帳帳號：<strong>037506018600</strong></div>
+        <div style="font-size:12px; color:#9ca3af; margin-top:4px;">※ 請完成匯款後填寫帳號末五碼，並於送出後上傳徵選影像方完成報名。</div>
+      </div>
+
+      <div class="form-group">
+        <label for="bankLast5">匯款帳號末五碼<span class="req">*</span></label>
+        <input type="text" id="bankLast5" placeholder="請輸入轉帳帳號後五碼（已繳費請填「已繳費」，補考免繳費請填「補考」）">
+      </div>
+
+      <label class="agree-box">
+        <input type="checkbox" id="agreeCheck">
+        <span>我已詳閱並同意遵守 MIXCIN® 2027 團員班線上徵選與補考相關規範，並確認所填寫資料與匯款資訊皆正確無誤。</span>
+      </label>
+
+      <button id="submitBtn" class="btn-submit" onclick="handleFormSubmit()">🚀 送出報名資料並前往 Dropbox 上傳影片</button>
+
+      <!-- 送出成功後的引導面板 -->
+      <div id="successPanel" class="success-modal hidden">
+        <h3>✅ 報名表已成功寫入系統！</h3>
+        <p style="font-size:14px; color:#d1fae5; margin-bottom:4px;">系統已自動為您複製專屬識別檔名：</p>
+        <div id="copiedTagText" class="tag-copy"></div>
+        <p style="font-size:13px; color:#a7f3d0; margin-bottom:16px;">請點擊下方按鈕前往 Dropbox 上傳影片，並務必加入徵選 LINE 社群！</p>
+        <div class="action-links">
+          <a id="dropboxLink" href="https://www.dropbox.com/request/rdfi68ueynnf2kkmim99" class="btn-dropbox">📤 1. 前往 Dropbox 上傳徵選影像（3秒後自動跳轉）</a>
+          <a href="https://line.me/ti/g2/Bsn82TZI0C8CWqTH3ywuvrtgLLv-lihvXl75Nw?utm_source=invitation&utm_medium=link_copy&utm_campaign=default" target="_blank" class="btn-line">💬 2. 加入 MIXCIN 2027 徵選官方 LINE 社群</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ================= 填入你的 Google Apps Script 部署網址 =================
+    const GAS_API_URL = "請在這裡貼上你的_https://script.google.com/macros/s/.../exec_網址";
+    const DROPBOX_URL = "https://www.dropbox.com/request/rdfi68ueynnf2kkmim99";
+    // =======================================================================
+
+    // 內建預設教材（確保網頁打開秒開影片，同時背景向試算表同步最新連結）
+    let MATERIALS = {
+      "U12/U18組": {
+        videoUrl: "https://www.youtube.com/embed/h6MbKFbkTKM",
+        musicUrl: "https://drive.google.com/uc?export=download&id=1Kg-_HvGYJ-dLW0QTLcco9k7syA62s8rM"
+      },
+      "KPOP組": {
+        videoUrl: "https://www.youtube.com/embed/4kqiDDOTY9I",
+        musicUrl: "https://drive.google.com/uc?export=download&id=1qX1jK_H7P9ve4fiRcJIZRK1dJDEQ9_ge"
+      }
+    };
+
+    let currentApplyType = "2027 競演團線上徵選";
+    let selectedGroups = [];
+    let selectedMaterialKeys = new Set();
+
+    window.onload = function() {
+      if (GAS_API_URL.startsWith("http")) {
+        fetch(GAS_API_URL)
+          .then(res => res.json())
+          .then(data => {
+            if (data && Object.keys(data).length > 0) {
+              MATERIALS = data;
+              updateFeeAndMaterials();
+            }
+          })
+          .catch(() => {});
+      }
+    };
+
+    function setApplyType(type) {
+      currentApplyType = type;
+      document.getElementById("modeAudition").classList.toggle("active", type === "2027 競演團線上徵選");
+      document.getElementById("modeMakeup").classList.toggle("active", type === "2026 團員班補考");
+      
+      const bankInput = document.getElementById("bankLast5");
+      if (type === "2026 團員班補考") {
+        if (!bankInput.value) bankInput.value = "補考免繳費";
+      } else {
+        if (bankInput.value === "補考免繳費") bankInput.value = "";
+      }
+      updateFeeAndMaterials();
+    }
+
+    function toggleGroup(cardEl, fullGroupName, materialKey) {
+      cardEl.classList.toggle("selected");
+      if (selectedGroups.includes(fullGroupName)) {
+        selectedGroups = selectedGroups.filter(g => g !== fullGroupName);
+      } else {
+        selectedGroups.push(fullGroupName);
+      }
+      updateFeeAndMaterials();
+    }
+
+    function updateFeeAndMaterials() {
+      const count = selectedGroups.length;
+      document.getElementById("summaryGroups").innerText = count > 0 ? selectedGroups.join("、") : "尚未選擇";
+      
+      let feeText = "NT$0";
+      if (currentApplyType === "2026 團員班補考") {
+        feeText = "NT$0 (補考)";
+      } else if (count === 1) {
+        feeText = "NT$200";
+      } else if (count >= 2) {
+        feeText = "NT$300";
+      }
+      document.getElementById("summaryFee").innerText = feeText;
+
+      selectedMaterialKeys.clear();
+      selectedGroups.forEach(g => {
+        if (g.includes("U12") || g.includes("U18")) selectedMaterialKeys.add("U12/U18組");
+        if (g.includes("KPOP")) selectedMaterialKeys.add("KPOP組");
+      });
+
+      const matSection = document.getElementById("materialSection");
+      const matContainer = document.getElementById("materialContainer");
+      matContainer.innerHTML = "";
+
+      if (selectedMaterialKeys.size > 0) {
+        selectedMaterialKeys.forEach(key => {
+          const info = MATERIALS[key];
+          if (info) {
+            const div = document.createElement("div");
+            div.className = "material-item";
+            div.innerHTML = `
+              <h4>🎬 ${key}｜指定舞序教學影片 & 徵選音樂</h4>
+              <div class="video-box">
+                <iframe src="${info.videoUrl}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+              </div>
+              <a href="${info.musicUrl}" target="_blank" class="btn-music">🎵 下載 ${key} 徵選音樂檔案</a>
+            `;
+            matContainer.appendChild(div);
+          }
+        });
+        matSection.classList.remove("hidden");
+      } else {
+        matSection.classList.add("hidden");
+      }
+    }
+
+    function calcAge() {
+      const bdayVal = document.getElementById("birthday").value;
+      if (!bdayVal) return;
+      const birthDate = new Date(bdayVal);
+      const today = new Date();
+      let age = today.getFullYear() - birthDate.getFullYear();
+      const m = today.getMonth() - birthDate.getMonth();
+      if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+        age--;
+      }
+      document.getElementById("age").value = age >= 0 ? age : 0;
+    }
+
+    function handleFormSubmit() {
+      if (selectedGroups.length === 0) return alert("請至少選擇一個報名／補考組別！");
+      
+      const studentName = document.getElementById("studentName").value.trim();
+      const gender = document.getElementById("gender").value;
+      const birthday = document.getElementById("birthday").value;
+      const age = document.getElementById("age").value;
+      const grade = document.getElementById("grade").value.trim();
+      const school = document.getElementById("school").value.trim();
+      const danceExp = document.getElementById("danceExp").value.trim();
+      const pastExp = document.getElementById("pastExp").value.trim();
+      const parentName = document.getElementById("parentName").value.trim();
+      const parentPhone = document.getElementById("parentPhone").value.trim();
+      const parentEmail = document.getElementById("parentEmail").value.trim();
+      const parentLine = document.getElementById("parentLine").value.trim();
+      const bankLast5 = document.getElementById("bankLast5").value.trim();
+      const agreed = document.getElementById("agreeCheck").checked;
+
+      if (!studentName) return alert("請填寫「徵選者姓名」！");
+      if (!gender) return alert("請選擇「性別」！");
+      if (!birthday) return alert("請選擇「出生年月日」！");
+      if (!grade) return alert("請填寫「目前學齡(年級)」！");
+      if (!school) return alert("請填寫「就讀學校」！");
+      if (!danceExp) return alert("請填寫「舞齡與舞蹈風格」！");
+      if (!parentName) return alert("請填寫「家長(聯絡人)姓名」！");
+      if (!parentPhone) return alert("請填寫「家長(聯絡人)電話」！");
+      if (!parentEmail) return alert("請填寫「家長(聯絡人) Email」！");
+      if (!parentLine) return alert("請填寫「家長(聯絡人) LINE ID」！");
+      if (!bankLast5) return alert("請填寫「匯款帳號末五碼」（已繳費請填已繳費，補考請填補考）！");
+      if (!agreed) return alert("請勾選同意遵守徵選與補考相關規範！");
+
+      const btn = document.getElementById("submitBtn");
+      btn.disabled = true;
+      btn.innerText = "⏳ 正在寫入報名資料，請稍候...";
+
+      const cleanGroups = selectedGroups.join("、").replace(/[\\/:*?"<>|]/g, "-");
+      const typeTag = currentApplyType === "2026 團員班補考" ? "2026補考" : "2027線上徵選";
+      const suggestedName = `[${typeTag}]_[${cleanGroups}]_${studentName}`;
+
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(suggestedName).catch(function(){});
+      }
+
+      const payload = {
+        applyType: currentApplyType,
+        selectedGroups: selectedGroups,
+        groupCount: selectedGroups.length,
+        totalFee: document.getElementById("summaryFee").innerText,
+        studentName: studentName,
+        gender: gender,
+        birthday: birthday,
+        age: age,
+        grade: grade,
+        school: school,
+        danceExp: danceExp,
+        pastExp: pastExp,
+        parentName: parentName,
+        parentPhone: parentPhone,
+        parentEmail: parentEmail,
+        parentLine: parentLine,
+        bankLast5: bankLast5,
+        agreed: agreed
+      };
+
+      // 使用 text/plain 送出 POST，避開瀏覽器 CORS 預檢限制並穩定寫入 Apps Script
+      fetch(GAS_API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify(payload)
+      })
+      .then(() => {
+        showSuccessAndRedirect(suggestedName);
+      })
+      .catch(() => {
+        showSuccessAndRedirect(suggestedName);
+      });
+    }
+
+    function showSuccessAndRedirect(suggestedName) {
+      const btn = document.getElementById("submitBtn");
+      btn.innerText = "✅ 報名成功！正在準備跳轉上傳...";
+      document.getElementById("copiedTagText").innerText = suggestedName;
+      document.getElementById("dropboxLink").href = DROPBOX_URL;
+      
+      const panel = document.getElementById("successPanel");
+      panel.classList.remove("hidden");
+      panel.scrollIntoView({ behavior: "smooth" });
+
+      setTimeout(function() {
+        window.location.href = DROPBOX_URL;
+      }, 3000);
+    }
+  </script>
+</body>
+</html>
