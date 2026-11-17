@@ -471,12 +471,9 @@
   </div>
 
   <script>
-    // ================= 填入你的 Google Apps Script 部署網址 =================
-    const GAS_API_URL = "請在這裡貼上你的_https://script.google.com/macros/s/.../exec_網址";
+    const GAS_API_URL = "https://script.google.com/macros/s/AKfycbygRkaxT_kYXllWESzZUd0A-mV6uuva7D3F6Qd0rVa3TAZpA7cHbnzA7oobjbNPiou5/exec";
     const DROPBOX_URL = "https://www.dropbox.com/request/rdfi68ueynnf2kkmim99";
-    // =======================================================================
 
-    // 內建預設教材（確保網頁打開秒開影片，同時背景向試算表同步最新連結）
     let MATERIALS = {
       "U12/U18組": {
         videoUrl: "https://www.youtube.com/embed/h6MbKFbkTKM",
@@ -493,17 +490,15 @@
     let selectedMaterialKeys = new Set();
 
     window.onload = function() {
-      if (GAS_API_URL.startsWith("http")) {
-        fetch(GAS_API_URL)
-          .then(res => res.json())
-          .then(data => {
-            if (data && Object.keys(data).length > 0) {
-              MATERIALS = data;
-              updateFeeAndMaterials();
-            }
-          })
-          .catch(() => {});
-      }
+      fetch(GAS_API_URL)
+        .then(res => res.json())
+        .then(data => {
+          if (data && Object.keys(data).length > 0) {
+            MATERIALS = data;
+            updateFeeAndMaterials();
+          }
+        })
+        .catch(() => {});
     };
 
     function setApplyType(type) {
@@ -653,7 +648,6 @@
         agreed: agreed
       };
 
-      // 使用 text/plain 送出 POST，避開瀏覽器 CORS 預檢限制並穩定寫入 Apps Script
       fetch(GAS_API_URL, {
         method: "POST",
         headers: { "Content-Type": "text/plain;charset=utf-8" },
